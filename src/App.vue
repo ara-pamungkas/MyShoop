@@ -1,28 +1,33 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <h1 class="fw-bold ms-2">MyShoop</h1>
+    <price-slider :maximal.sync="maximal"></price-slider>
+    <product-list :products="products" :maximal="maximal"></product-list>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import PriceSlider from "./components/PriceSlider.vue";
+import ProductList from "./components/ProductList.vue";
 
 export default {
   name: "App",
+  data: function () {
+    return {
+      maximal: 30,
+      products: [],
+    };
+  },
   components: {
-    HelloWorld,
+    ProductList,
+    PriceSlider,
+  },
+  mounted: function () {
+    fetch("https://hplussport.com/api/products/order/price")
+      .then((res) => res.json())
+      .then((save) => {
+        this.products = save;
+      });
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
